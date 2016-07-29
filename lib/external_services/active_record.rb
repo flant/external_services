@@ -6,16 +6,19 @@ module ExternalServices
       module ClassMethods
         def has_external_service(name, options = {})
           class_attribute :external_services unless respond_to?(:external_services)
-          self.external_services ||= []
-          self.external_services << name.to_sym
+          self.external_services ||= {}
+          self.external_services[name.to_sym] = options
 
-          service_class = get_service_class(name, options)
-          service_assoc = :"#{name}_service"
-          has_one service_assoc, class_name: service_class, as: :subject, dependent: :destroy, autosave: true
+          unless options[:only_api_actions] == true
+            service_class = get_service_class(name, options)
+            service_assoc = :"#{name}_service"
+            has_one service_assoc, class_name: service_class, as: :subject, dependent: :destroy, autosave: true
 
-          define_external_service_getset         name, options
+            define_external_service_getset         name, options
+            define_external_service_sync_methods   name, options
+          end
+
           define_external_service_callbacks      name, options
-          define_external_service_sync_methods   name, options
           define_external_service_helper_methods name, options
 
           extend  service_class::SubjectClassMethods if defined? service_class::SubjectClassMethods
@@ -31,7 +34,7 @@ module ExternalServices
         end
 
         def includes_external_services
-          includes(self.external_services.map { |name| :"#{name}_service" })
+          includes(self.external_services.keys.map { |name| :"#{name}_service" })
         end
 
         def external_services_disabled
@@ -86,15 +89,18 @@ module ExternalServices
         end
 
         # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-        def define_external_service_callbacks(name, _options = {})
+        def define_external_service_callbacks(name, options = {})
           service_assoc = :"#{name}_service"
+          only_api_actions = (options[:only_api_actions] == true)
 
           callbacks_module = Module.new do
             extend ActiveSupport::Concern
 
             included do
-              before_save do
-                public_send(:"build_#{service_assoc}") if public_send(service_assoc).blank?
+              unless only_api_actions
+                before_save do
+                  public_send(:"build_#{service_assoc}") if public_send(service_assoc).blank?
+                end
               end
 
               after_save    :"#{name}_on_create", if: :id_changed?
@@ -107,21 +113,21 @@ module ExternalServices
             end
 
             define_method :"#{name}_on_create" do
-              public_send(service_assoc).on_subject_create(self)
+              public_send(service_assoc).on_subject_create(self) unless only_api_actions
             end
             protected :"#{name}_on_create"
 
             define_method :"#{name}_on_update" do
-              public_send(service_assoc).on_subject_update(self)
+              public_send(service_assoc).on_subject_update(self) unless only_api_actions
             end
 
             define_method :"#{name}_on_destroy" do
-              public_send(service_assoc).on_subject_destroy(self)
+              public_send(service_assoc).on_subject_destroy(self) unless only_api_actions
             end
             protected :"#{name}_on_destroy"
 
             define_method :"#{name}_on_revive" do
-              public_send(service_assoc).on_subject_revive(self)
+              public_send(service_assoc).on_subject_revive(self) unless only_api_actions
             end
             protected :"#{name}_on_revive"
           end

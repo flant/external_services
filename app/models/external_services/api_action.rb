@@ -1,6 +1,6 @@
 module ExternalServices
   class ApiAction < ::ActiveRecord::Base
-    self.table_name = :external_api_actions
+    self.table_name = :external_services_api_actions
 
     belongs_to :initiator, polymorphic: true
 

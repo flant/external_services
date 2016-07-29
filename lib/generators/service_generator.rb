@@ -7,9 +7,19 @@ module ExternalServices
     class ServiceGenerator < ::Rails::Generators::NamedBase
       source_root File.expand_path('../templates/services', __FILE__)
 
+
+      class_option(
+        :only_api_actions,
+        type: :boolean,
+        default: false,
+        desc: "Do not generate service model class"
+      )
+
       desc 'Generates specified model and API classes.'
 
       def add_model
+        return if options.only_api_actions?
+
         dir = File.expand_path('app/models/external_services')
         template 'model.rb', File.join(dir, "#{file_name}.rb")
       end

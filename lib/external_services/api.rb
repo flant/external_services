@@ -10,6 +10,14 @@ module ExternalServices
       end
     end
 
+    def api_url
+      ENV["#{to_s.demodulize.upcase}_API_URL"]
+    end
+
+    def api_key
+      ENV["#{to_s.demodulize.upcase}_API_KEY"]
+    end
+
     def auth_header
       'Authorization'
     end
@@ -47,6 +55,24 @@ module ExternalServices
 
     def fake?
       !connection
+    end
+
+    def fake_response_body(method, path, params = {})
+      (method == :post ? { 'id' => SecureRandom.hex } : {})
+    end
+
+    def request(method, path, params = {}, body = nil)
+      resp = if fake?
+               Struct.new(:success?, :body, :headers).new(true, fake_response_body(method, path, params), {})
+             else
+               connection.send(method, path, body) do |req|
+                 req.params = params
+               end
+             end
+
+      raise Error, resp unless resp.blank? || resp.success?
+
+      resp
     end
   end
 end

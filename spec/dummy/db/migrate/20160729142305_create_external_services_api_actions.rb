@@ -1,7 +1,7 @@
-class CreateExternalApiActions < ActiveRecord::Migration
+class CreateExternalServicesApiActions < ActiveRecord::Migration
   def change
-    create_table :external_api_actions do |t|
-      t.references :initiator, null: false, polymorphic: true, index: true
+    create_table :external_services_api_actions do |t|
+      t.references :initiator, null: false, polymorphic: true, index: { name: 'esaa_on_initiator_type_and_initiator_id' }
       t.string     :type,      null: false
 
       t.string     :name
