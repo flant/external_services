@@ -1,4 +1,4 @@
-# ExternalServices
+# ExternalServices [![Build Status](https://travis-ci.org/flant/external_services.svg?branch=master)](https://travis-ci.org/flant/external_services)
 
 Gem helps syncronizing objects to different external services like Gitlab, Redmine and any other.
 
