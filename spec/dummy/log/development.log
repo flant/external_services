@@ -1,0 +1,289 @@
+  [1m[35m (109.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (95.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateExternalServices (20160729095508)
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateExternalServices (20160729095656)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class CreateExternalServices < ActiveRecord::Migration[4.2] (called from load at /home/gsmetal/.rvm/gems/ruby-2.2.4/bin/rake:23)
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "external_services" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject_type" varchar NOT NULL, "subject_id" integer NOT NULL, "type" varchar NOT NULL, "external_id" varchar, "extra_data" text)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_external_services_on_subject_type_and_subject_id" ON "external_services" ("subject_type", "subject_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_external_services_on_external_id" ON "external_services" ("external_id")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729095656"]]
+  [1m[35m (74.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateExternalApiActions (20160729095657)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class CreateExternalApiActions < ActiveRecord::Migration[4.2] (called from load at /home/gsmetal/.rvm/gems/ruby-2.2.4/bin/rake:23)
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "external_api_actions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "initiator_type" varchar NOT NULL, "initiator_id" integer NOT NULL, "type" varchar NOT NULL, "name" varchar, "method" varchar NOT NULL, "path" varchar NOT NULL, "data" text, "signature" varchar, "queue" varchar NOT NULL, "created_at" datetime, "processed_at" datetime)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_external_api_actions_on_initiator_type_and_initiator_id" ON "external_api_actions" ("initiator_type", "initiator_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729095657"]]
+  [1m[35m (104.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2016-07-29 09:57:07 UTC], ["updated_at", 2016-07-29 09:57:07 UTC]]
+  [1m[35m (68.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePosts (20160729095817)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729095817"]]
+  [1m[35m (113.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+[0m
+  [1m[36mPost Load (2.3ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[36mPost Load (0.3ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" ORDER BY "posts"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "posts" ("name", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "asdf"], ["value", "zxcv"], ["created_at", 2016-07-29 09:59:56 UTC], ["updated_at", 2016-07-29 09:59:56 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "external_services" ("subject_type", "subject_id", "type") VALUES (?, ?, ?)[0m  [["subject_type", "Post"], ["subject_id", 1], ["type", "ExternalServices::Test"]]
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "posts" ("name", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "asdf"], ["value", "zxcv"], ["created_at", 2016-07-29 10:00:35 UTC], ["updated_at", 2016-07-29 10:00:35 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "external_services" ("subject_type", "subject_id", "type") VALUES (?, ?, ?)[0m  [["subject_type", "Post"], ["subject_id", 1], ["type", "ExternalServices::Test"]]
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "posts" ("name", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "asdf"], ["value", "zxcv"], ["created_at", 2016-07-29 10:01:12 UTC], ["updated_at", 2016-07-29 10:01:12 UTC]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "external_services" ("subject_type", "subject_id", "type") VALUES (?, ?, ?)[0m  [["subject_type", "Post"], ["subject_id", 1], ["type", "ExternalServices::Test"]]
+  [1m[35m (0.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "posts" ("name", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "asdf"], ["value", "zxcv"], ["created_at", 2016-07-29 10:07:30 UTC], ["updated_at", 2016-07-29 10:07:30 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "external_services" ("subject_type", "subject_id", "type") VALUES (?, ?, ?)[0m  [["subject_type", "Post"], ["subject_id", 1], ["type", "ExternalServices::Test"]]
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[35m (121.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (94.9ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateExternalServices (20160729095656)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class CreateExternalServices < ActiveRecord::Migration[4.2] (called from load at /home/gsmetal/.rvm/gems/ruby-2.2.4/bin/rake:23)
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "external_services" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject_type" varchar NOT NULL, "subject_id" integer NOT NULL, "type" varchar NOT NULL, "external_id" varchar, "extra_data" text)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE  INDEX "index_external_services_on_subject_type_and_subject_id" ON "external_services" ("subject_type", "subject_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE  INDEX "index_external_services_on_external_id" ON "external_services" ("external_id")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729095656"]]
+  [1m[35m (86.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateExternalApiActions (20160729095657)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class CreateExternalApiActions < ActiveRecord::Migration[4.2] (called from load at /home/gsmetal/.rvm/gems/ruby-2.2.4/bin/rake:23)
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "external_api_actions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "initiator_type" varchar NOT NULL, "initiator_id" integer NOT NULL, "type" varchar NOT NULL, "name" varchar, "method" varchar NOT NULL, "path" varchar NOT NULL, "data" text, "signature" varchar, "queue" varchar NOT NULL, "created_at" datetime, "processed_at" datetime)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE  INDEX "index_external_api_actions_on_initiator_type_and_initiator_id" ON "external_api_actions" ("initiator_type", "initiator_id")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729095657"]]
+  [1m[35m (126.5ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreatePosts (20160729095817)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729095817"]]
+  [1m[35m (102.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2016-07-29 10:16:27 UTC], ["updated_at", 2016-07-29 10:16:27 UTC]]
+  [1m[35m (65.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "asdf"], ["value", "zxcv"], ["created_at", 2016-07-29 10:16:36 UTC], ["updated_at", 2016-07-29 10:16:36 UTC]]
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "external_services" ("subject_type", "subject_id", "type") VALUES (?, ?, ?)[0m  [["subject_type", "Post"], ["subject_id", 1], ["type", "ExternalServices::Test"]]
+  [1m[35m (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[35m (111.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (105.6ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreatePosts (20160729095817)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729095817"]]
+  [1m[35m (126.9ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateExternalServices (20160729101754)
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class CreateExternalServices < ActiveRecord::Migration[4.2] (called from load at /home/gsmetal/.rvm/gems/ruby-2.2.4/bin/rake:23)
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "external_services" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "subject_type" varchar NOT NULL, "subject_id" integer NOT NULL, "type" varchar NOT NULL, "external_id" varchar, "extra_data" text)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE  INDEX "index_external_services_on_subject_type_and_subject_id" ON "external_services" ("subject_type", "subject_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE  INDEX "index_external_services_on_external_id" ON "external_services" ("external_id")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729101754"]]
+  [1m[35m (104.0ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateExternalApiActions (20160729101755)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+DEPRECATION WARNING: Directly inheriting from ActiveRecord::Migration is deprecated. Please specify the Rails release the migration was written for:
+
+  class CreateExternalApiActions < ActiveRecord::Migration[4.2] (called from load at /home/gsmetal/.rvm/gems/ruby-2.2.4/bin/rake:23)
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "external_api_actions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "initiator_type" varchar NOT NULL, "initiator_id" integer NOT NULL, "type" varchar NOT NULL, "name" varchar, "method" varchar NOT NULL, "path" varchar NOT NULL, "data" text, "signature" varchar, "queue" varchar NOT NULL, "options" text, "created_at" datetime, "processed_at" datetime)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE  INDEX "index_external_api_actions_on_initiator_type_and_initiator_id" ON "external_api_actions" ("initiator_type", "initiator_id")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160729101755"]]
+  [1m[35m (117.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2016-07-29 10:18:12 UTC], ["updated_at", 2016-07-29 10:18:12 UTC]]
+  [1m[35m (84.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_api_actions_on_initiator_type_and_initiator_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_external_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_external_services_on_subject_type_and_subject_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "posts" ("name", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "asdf"], ["value", "zxcv"], ["created_at", 2016-07-29 10:18:22 UTC], ["updated_at", 2016-07-29 10:18:22 UTC]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "external_services" ("subject_type", "subject_id", "type") VALUES (?, ?, ?)[0m  [["subject_type", "Post"], ["subject_id", 1], ["type", "ExternalServices::Test"]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "external_api_actions" ("initiator_type", "initiator_id", "type", "name", "method", "path", "data", "queue", "options", "created_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["initiator_type", "Post"], ["initiator_id", 1], ["type", "ExternalServices::ApiActions::Test"], ["name", "post"], ["method", "post"], ["path", "posts"], ["data", "{\"name\":\"asdf\",\"value\":\"zxcv\"}"], ["queue", "default"], ["options", "{\"change_external_id\":true}"], ["created_at", 2016-07-29 10:18:22 UTC]]
+  [1m[35m (69.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mExternalServices::ApiActions::Test Load (0.4ms)[0m  [1m[34mSELECT "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."type" IN ('ExternalServices::ApiActions::Test')[0m
+  [1m[36mExternalServices::ApiActions::Test Load (0.2ms)[0m  [1m[34mSELECT "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."type" IN ('ExternalServices::ApiActions::Test')[0m
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mExternalServices::ApiActions::Test Load (0.2ms)[0m  [1m[34mSELECT "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."type" IN ('ExternalServices::ApiActions::Test')[0m
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] Enqueued ExternalServices::TestApiJob (Job ID: 426a9b33-a916-476e-862d-8b0c61f974ee) to Async(default) with arguments: 1
+[ActiveJob] [ExternalServices::TestApiJob] [426a9b33-a916-476e-862d-8b0c61f974ee] Performing ExternalServices::TestApiJob from Async(default) with arguments: 1
+[ActiveJob] [ExternalServices::TestApiJob] [426a9b33-a916-476e-862d-8b0c61f974ee]   [1m[36mExternalServices::ApiActions::Test Load (0.4ms)[0m  [1m[34mSELECT  "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."type" IN ('ExternalServices::ApiActions::Test') AND "external_api_actions"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [ExternalServices::TestApiJob] [426a9b33-a916-476e-862d-8b0c61f974ee] Performed ExternalServices::TestApiJob from Async(default) in 53.73ms
+  [1m[36mExternalServices::ApiActions::Test Load (0.2ms)[0m  [1m[34mSELECT "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."type" IN ('ExternalServices::ApiActions::Test')[0m
+  [1m[36mPost Load (0.2ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc] Performing ExternalServices::TestApiJob from Async(default) with arguments: 1
+[ActiveJob] Enqueued ExternalServices::TestApiJob (Job ID: 03f48be2-4586-4f48-ac43-b212306f2bcc) to Async(default) with arguments: 1
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc]   [1m[36mExternalServices::ApiActions::Test Load (0.4ms)[0m  [1m[34mSELECT  "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."type" IN ('ExternalServices::ApiActions::Test') AND "external_api_actions"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc]   [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc]   [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc]   [1m[35mSQL (0.3ms)[0m  [1m[33mUPDATE "external_api_actions" SET "processed_at" = ? WHERE "external_api_actions"."id" = ?[0m  [["processed_at", 2016-07-29 10:22:53 UTC], ["id", 1]]
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc]   [1m[35m (94.1ms)[0m  [1m[36mcommit transaction[0m
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc] Enqueued ExternalServices::TestApiJob (Job ID: 115b1002-120a-4c03-852c-6e225f83011b) to Async(default) with arguments: 1
+[ActiveJob] [ExternalServices::TestApiJob] [03f48be2-4586-4f48-ac43-b212306f2bcc] Performed ExternalServices::TestApiJob from Async(default) in 106.64ms
+[ActiveJob] [ExternalServices::TestApiJob] [115b1002-120a-4c03-852c-6e225f83011b] Performing ExternalServices::TestApiJob from Async(default) with arguments: 1
+[ActiveJob] [ExternalServices::TestApiJob] [115b1002-120a-4c03-852c-6e225f83011b]   [1m[36mExternalServices::ApiActions::Test Load (0.5ms)[0m  [1m[34mSELECT  "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."type" IN ('ExternalServices::ApiActions::Test') AND "external_api_actions"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+[ActiveJob] [ExternalServices::TestApiJob] [115b1002-120a-4c03-852c-6e225f83011b] Performed ExternalServices::TestApiJob from Async(default) in 1.77ms
+  [1m[36mExternalServices::ApiAction Load (0.3ms)[0m  [1m[34mSELECT "external_api_actions".* FROM "external_api_actions" WHERE "external_api_actions"."processed_at" IS NULL[0m
