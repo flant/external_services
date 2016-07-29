@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :post do
-    name "MyString"
-    value "MyString"
+    name 'MyString'
+    value 'MyString'
   end
 end

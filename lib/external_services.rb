@@ -1,5 +1,5 @@
 require 'external_services/engine'
-require "external_services/version"
+require 'external_services/version'
 
 require 'external_services/active_record'
 require 'external_services/api'

@@ -1,5 +1,32 @@
+AllCops:
+  TargetRubyVersion: 2.2
+  Exclude:
+  - 'lib/generators/templates/**/*'
+
 Metrics/LineLength:
-  Max: 120
+  Max: 140
 
 Metrics/AbcSize:
   Max: 25
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/ModuleLength:
+  Max: 200
+
+Metrics/ClassLength:
+  Max: 300
+
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+Metrics/PerceivedComplexity:
+  Max: 8
+
+
+Style/Documentation:
+  Enabled: false
+
+Style/PredicateName:
+  Enabled: false

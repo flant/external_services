@@ -214,7 +214,6 @@ module ExternalServices
               send(:"to_#{name}_api")
             end
 
-
             define_method :"#{name}_api_action" do |method, **args|
               return if self.class.send(:"#{name}_api_disabled")
               return if !args[:force] && send(:"#{name}_api_disabled")

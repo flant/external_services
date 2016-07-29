@@ -1,5 +1,5 @@
-require "rails/generators"
-require "rails/generators/active_record"
+require 'rails/generators'
+require 'rails/generators/active_record'
 
 module ExternalServices
   module Generators
@@ -7,13 +7,13 @@ module ExternalServices
     class InstallGenerator < ::Rails::Generators::Base
       include ::Rails::Generators::Migration
 
-      source_root File.expand_path("../templates", __FILE__)
+      source_root File.expand_path('../templates', __FILE__)
 
-      desc "Generates migrations and directories."
+      desc 'Generates migrations and directories.'
 
       def create_migration_files
-        add_migration("create_external_services")
-        add_migration("create_external_api_actions")
+        add_migration('create_external_services')
+        add_migration('create_external_api_actions')
       end
 
       def create_directories
@@ -35,7 +35,7 @@ module ExternalServices
       end
 
       def add_migration(template)
-        migration_dir = File.expand_path("db/migrate")
+        migration_dir = File.expand_path('db/migrate')
         if self.class.migration_exists?(migration_dir, template)
           ::Kernel.warn "Migration already exists: #{template}"
         else

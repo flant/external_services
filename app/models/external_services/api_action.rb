@@ -36,7 +36,7 @@ module ExternalServices
     end
 
     def change_external_id?
-      options["change_external_id"]
+      options['change_external_id']
     end
 
     def job_class

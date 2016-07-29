@@ -29,23 +29,21 @@ module ExternalServices
       end
     end
 
-    # rubocop:disable Lint/UnusedMethodArgument
-    def get(path, params: {}, **kwargs)
+    def get(path, params: {}, **_kwargs)
       request(:get, path, params)
     end
 
-    def post(path, body:, params: {}, **kwargs)
+    def post(path, body:, params: {}, **_kwargs)
       request(:post, path, params, body)
     end
 
-    def put(path, body:, params: {}, **kwargs)
+    def put(path, body:, params: {}, **_kwargs)
       request(:put, path, params, body)
     end
 
-    def delete(path, params: {}, **kwargs)
+    def delete(path, params: {}, **_kwargs)
       request(:delete, path, params)
     end
-    # rubocop:enable Lint/UnusedMethodArgument
 
     def fake?
       !connection

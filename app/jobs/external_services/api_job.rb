@@ -3,7 +3,7 @@ module ExternalServices
     queue_as :default
 
     def action_class
-      "ExternalServices::ApiActions::#{self.class.to_s.demodulize.gsub(%r{ApiJob}, '')}".constantize
+      "ExternalServices::ApiActions::#{self.class.to_s.demodulize.gsub(/ApiJob/, '')}".constantize
     end
 
     def perform(action_id)

@@ -9,7 +9,7 @@ class CreateExternalApiActions < ActiveRecord::Migration
       t.string     :path,      null: false
       t.text       :data
       t.string     :signature
-      t.string     :queue,     null: false
+      t.string     :queue, null: false
 
       t.text       :options
 
