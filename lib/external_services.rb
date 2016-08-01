@@ -6,7 +6,7 @@ require 'external_services/api'
 require 'generators/install_generator'
 require 'generators/service_generator'
 
-if defined?(::RSpec)
+if defined?(::RSpec::Core)
   require 'rspec/configuration'
   require 'rspec/helpers'
 end
