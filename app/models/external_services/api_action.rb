@@ -63,9 +63,9 @@ module ExternalServices
 
     def assign_queue
       self.queue ||= case method.to_sym
-                     when :create
+                     when :post
                        :create
-                     when :destroy
+                     when :delete
                        :delete
                      else
                        :default
