@@ -1,3 +1,6 @@
+require 'faraday'
+require 'faraday_middleware'
+
 module ExternalServices
   module Api
     class Error < StandardError
