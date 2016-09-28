@@ -54,6 +54,10 @@ module ExternalServices
           self.external_services_disabled = old
         end
 
+        def delayed_action_class_name(api_name, action_name)
+          "ExternalServices::DelayedActions::#{api_name.to_s.camelize}::#{action_name.to_s.camelize}#{name.demodulize}"
+        end
+
         private
 
         def get_service_class(name, options = {})
@@ -113,21 +117,29 @@ module ExternalServices
             end
 
             define_method :"#{name}_on_create" do
-              public_send(service_assoc).on_subject_create(self) unless only_api_actions
+              return true if only_api_actions || public_send("#{name}_delayed_action", :create)
+
+              public_send(service_assoc).on_subject_create(self)
             end
             protected :"#{name}_on_create"
 
             define_method :"#{name}_on_update" do
-              public_send(service_assoc).on_subject_update(self) unless only_api_actions
+              return true if only_api_actions || public_send("#{name}_delayed_action", :update)
+
+              public_send(service_assoc).on_subject_update(self)
             end
 
             define_method :"#{name}_on_destroy" do
-              public_send(service_assoc).on_subject_destroy(self) unless only_api_actions
+              return true if only_api_actions || public_send("#{name}_delayed_action", :destroy)
+
+              public_send(service_assoc).on_subject_destroy(self)
             end
             protected :"#{name}_on_destroy"
 
             define_method :"#{name}_on_revive" do
-              public_send(service_assoc).on_subject_revive(self) unless only_api_actions
+              return true if only_api_actions || public_send("#{name}_delayed_action", :revive)
+
+              public_send(service_assoc).on_subject_revive(self)
             end
             protected :"#{name}_on_revive"
           end
@@ -220,6 +232,10 @@ module ExternalServices
               send(:"to_#{name}_api")
             end
 
+            define_method :"serialize_for_#{name}_api" do
+              ActiveSupport::HashWithIndifferentAccess.new JSON.parse(to_json)
+            end
+
             define_method :"#{name}_api_action" do |method, **args|
               return if self.class.send(:"#{name}_api_disabled")
               return if !args[:force] && send(:"#{name}_api_disabled")
@@ -239,6 +255,16 @@ module ExternalServices
                 queue:     args[:queue],
                 options:   options
               )
+            end
+
+            define_method :"#{name}_delayed_action" do |action, **args|
+              return if self.class.send(:"#{name}_api_disabled")
+              return if !args[:force] && send(:"#{name}_api_disabled")
+
+              delayed_class_name = self.class.delayed_action_class_name(name, action)
+              return delayed_class_name.constantize.create_with_args!(self) if Object.const_defined?(delayed_class_name)
+
+              false
             end
           end
 

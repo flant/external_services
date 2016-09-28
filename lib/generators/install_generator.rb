@@ -14,6 +14,7 @@ module ExternalServices
       def create_migration_files
         add_migration('create_external_services')
         add_migration('create_external_services_api_actions')
+        add_migration('create_external_services_delayed_actions')
       end
 
       def create_directories

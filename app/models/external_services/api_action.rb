@@ -1,5 +1,7 @@
 module ExternalServices
   class ApiAction < ::ActiveRecord::Base
+    include ExternalServices::Action
+
     self.table_name = :external_services_api_actions
 
     belongs_to :initiator, polymorphic: true
@@ -10,29 +12,13 @@ module ExternalServices
     serialize :data,    JSON
     serialize :options, JSON
 
-    scope :unprocessed, -> { where(processed_at: nil) }
-
-    before_validation :assign_queue
     before_validation :process_data
-    after_commit      :kick_active_job
-
+    before_validation :assign_queue
     before_create :calculate_signature
-
-    def processed?
-      processed_at.present?
-    end
-
-    def set_processed!
-      update_attributes! processed_at: Time.now
-    end
 
     def initiator_class
       # Need to use initiator object for STI in polymorphic.. But still will be bugs with deleted STI object
       initiator.try(:class) || initiator_type.constantize
-    end
-
-    def api_disabled?
-      initiator_class.send(:"#{self.class.to_s.demodulize.underscore}_api_disabled")
     end
 
     def change_external_id?
@@ -43,20 +29,8 @@ module ExternalServices
       "ExternalServices::#{self.class.to_s.demodulize}ApiJob".constantize
     end
 
-    def kick_active_job
-      return if api_disabled?
-
-      job_class.set(queue: queue).perform_later(id)
-    end
-
-    def self.perform_unprocessed
-      Rails.logger.info "Running unprocessed #{self.class.name.demodulize} api actions..."
-
-      unprocessed.each(&:kick_active_job)
-    end
-
-    def execute!
-      raise NotImplementedError
+    def api_disabled?
+      initiator_class.send(:"#{self.class.to_s.demodulize.underscore}_api_disabled")
     end
 
     protected
