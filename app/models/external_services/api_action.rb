@@ -2,6 +2,8 @@ module ExternalServices
   class ApiAction < ::ActiveRecord::Base
     include ExternalServices::Action
 
+    attr_accessor :async
+
     self.table_name = :external_services_api_actions
 
     belongs_to :initiator, polymorphic: true
@@ -55,6 +57,13 @@ module ExternalServices
 
     def path_format_correctness
       errors.add(:path, :invalid) if path =~ %r{//}
+    end
+
+    private
+
+    def create_or_update(*args)
+      return true if async
+      super
     end
   end
 end

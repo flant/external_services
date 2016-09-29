@@ -54,10 +54,6 @@ module ExternalServices
           self.external_services_disabled = old
         end
 
-        def delayed_action_class_name(api_name, action_name)
-          "ExternalServices::DelayedActions::#{api_name.to_s.camelize}::#{action_name.to_s.camelize}#{name.demodulize}"
-        end
-
         private
 
         def get_service_class(name, options = {})
@@ -117,29 +113,21 @@ module ExternalServices
             end
 
             define_method :"#{name}_on_create" do
-              return true if only_api_actions || public_send("#{name}_delayed_action", :create)
-
-              public_send(service_assoc).on_subject_create(self)
+              public_send(service_assoc).on_subject_create(self) unless only_api_actions
             end
             protected :"#{name}_on_create"
 
             define_method :"#{name}_on_update" do
-              return true if only_api_actions || public_send("#{name}_delayed_action", :update)
-
-              public_send(service_assoc).on_subject_update(self)
+              public_send(service_assoc).on_subject_update(self) unless only_api_actions
             end
 
             define_method :"#{name}_on_destroy" do
-              return true if only_api_actions || public_send("#{name}_delayed_action", :destroy)
-
-              public_send(service_assoc).on_subject_destroy(self)
+              public_send(service_assoc).on_subject_destroy(self) unless only_api_actions
             end
             protected :"#{name}_on_destroy"
 
             define_method :"#{name}_on_revive" do
-              return true if only_api_actions || public_send("#{name}_delayed_action", :revive)
-
-              public_send(service_assoc).on_subject_revive(self)
+              public_send(service_assoc).on_subject_revive(self) unless only_api_actions
             end
             protected :"#{name}_on_revive"
           end
@@ -243,10 +231,11 @@ module ExternalServices
               path    = args[:path]    || send(:"#{name}_api_path")
               data    = args[:data]    || send(:"#{name}_api_data")
               options = args[:options] || {}
+              async   = args[:async] || false
 
               options[:change_external_id] = true if options[:change_external_id].nil?
 
-              "ExternalServices::ApiActions::#{name.to_s.camelize}".constantize.create!(
+              action = "ExternalServices::ApiActions::#{name.to_s.camelize}".constantize.new(
                 initiator: self,
                 name:      args[:name] || self.class.send(:"#{name}_api_name"),
                 method:    method,
@@ -255,16 +244,12 @@ module ExternalServices
                 queue:     args[:queue],
                 options:   options
               )
-            end
 
-            define_method :"#{name}_delayed_action" do |action, **args|
-              return if self.class.send(:"#{name}_api_disabled")
-              return if !args[:force] && send(:"#{name}_api_disabled")
-
-              delayed_class_name = self.class.delayed_action_class_name(name, action)
-              return delayed_class_name.constantize.create_with_args!(self) if Object.const_defined?(delayed_class_name)
-
-              false
+              if async
+                action.execute!
+              else
+                action.save!
+              end
             end
           end
 

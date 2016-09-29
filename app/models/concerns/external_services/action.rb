@@ -3,6 +3,7 @@ module ExternalServices
     extend ActiveSupport::Concern
 
     included do
+      scope :processed, -> { where.not(processed_at: nil) }
       scope :unprocessed, -> { where(processed_at: nil) }
 
       after_commit :kick_active_job
