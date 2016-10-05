@@ -65,6 +65,9 @@ module ExternalServices
 
             if :destroy.in? methods
               it 'creates action on delete' do
+                @api_object.send("#{@id_key}=", SecureRandom.hex)
+                @api_object.save
+
                 if @api_object.respond_to?(:descendants)
                   @api_object.reload.descendants.each(&:delete)
                 end
