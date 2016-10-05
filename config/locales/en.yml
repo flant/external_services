@@ -1,0 +1,5 @@
+en:
+  activerecord:
+    errors:
+      messages:
+        external_services_not_synced: "Not all external services are synced"

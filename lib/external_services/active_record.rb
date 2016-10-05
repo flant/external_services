@@ -102,16 +102,8 @@ module ExternalServices
                   public_send(:"build_#{service_assoc}") if public_send(service_assoc).blank?
                 end
 
-                before_destroy do
-                  unless external_services_synced?
-                    errors.add :base, :external_services_not_synced
-                    if ::ActiveRecord::VERSION::MAJOR < 5
-                      false
-                    else
-                      throw :abort
-                    end
-                  end
-                end
+                before_update  :halt_on_external_services_unsynced
+                before_destroy :halt_on_external_services_unsynced
               end
 
               after_save    :"#{name}_on_create", if: :id_changed?
@@ -141,6 +133,17 @@ module ExternalServices
               public_send(service_assoc).on_subject_revive(self) unless only_api_actions
             end
             protected :"#{name}_on_revive"
+
+            protected def halt_on_external_services_unsynced
+              unless external_services_synced?
+                errors.add :base, :external_services_not_synced
+                if ::ActiveRecord::VERSION::MAJOR < 5
+                  return false
+                else
+                  throw :abort
+                end
+              end
+            end
           end
           # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
