@@ -7,12 +7,11 @@ module ExternalServices
     class ServiceGenerator < ::Rails::Generators::NamedBase
       source_root File.expand_path('../templates/services', __FILE__)
 
-
       class_option(
         :only_api_actions,
         type: :boolean,
         default: false,
-        desc: "Do not generate service model class"
+        desc: 'Do not generate service model class'
       )
 
       desc 'Generates specified model and API classes.'

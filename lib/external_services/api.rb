@@ -60,7 +60,7 @@ module ExternalServices
       !connection
     end
 
-    def fake_response_body(method, path, params = {})
+    def fake_response_body(method, _path, _params = {})
       (method == :post ? { 'id' => SecureRandom.hex } : {})
     end
 

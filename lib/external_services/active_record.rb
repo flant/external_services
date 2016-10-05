@@ -88,7 +88,7 @@ module ExternalServices
           end
         end
 
-        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def define_external_service_callbacks(name, options = {})
           service_assoc = :"#{name}_service"
           only_api_actions = (options[:only_api_actions] == true)
@@ -100,6 +100,17 @@ module ExternalServices
               unless only_api_actions
                 before_save do
                   public_send(:"build_#{service_assoc}") if public_send(service_assoc).blank?
+                end
+
+                before_destroy do
+                  unless external_services_synced?
+                    errors.add :base, :external_services_not_synced
+                    if ::ActiveRecord::VERSION::MAJOR < 5
+                      false
+                    else
+                      throw :abort
+                    end
+                  end
                 end
               end
 
@@ -131,7 +142,7 @@ module ExternalServices
             end
             protected :"#{name}_on_revive"
           end
-          # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+          # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
           include callbacks_module
         end
