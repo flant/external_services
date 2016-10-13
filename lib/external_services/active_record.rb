@@ -102,8 +102,8 @@ module ExternalServices
                   public_send(:"build_#{service_assoc}") if public_send(service_assoc).blank?
                 end
 
-                before_update  :halt_on_external_services_unsynced
-                before_destroy :halt_on_external_services_unsynced
+                before_update  :halt_on_external_services_syncing
+                before_destroy :halt_on_external_services_syncing
               end
 
               after_save    :"#{name}_on_create", if: :id_changed?
@@ -134,9 +134,9 @@ module ExternalServices
             end
             protected :"#{name}_on_revive"
 
-            protected def halt_on_external_services_unsynced
-              unless external_services_synced?
-                errors.add :base, :external_services_not_synced
+            protected def halt_on_external_services_syncing
+              if external_services_syncing?
+                errors.add :base, :external_services_sync_in_process
                 if ::ActiveRecord::VERSION::MAJOR < 5
                   return false
                 else
@@ -153,6 +153,7 @@ module ExternalServices
         def define_external_service_sync_methods(name, _options = {})
           service_assoc = :"#{name}_service"
           synced_method = :"#{name}_service_synced?"
+          syncing_method = :"#{name}_service_syncing?"
           disabled_method = :"#{name}_api_disabled"
 
           syncs_module = Module.new do
@@ -162,9 +163,20 @@ module ExternalServices
               public_send(service_assoc).external_id?
             end
 
+            define_method syncing_method do
+              action_class = "ExternalServices::ApiActions::#{name.to_s.camelize}".constantize
+              action_class.to_create(self).unprocessed.exists?
+            end
+
             define_method :external_services_synced? do
               result = (!defined?(super) || super())
               result &&= public_send(synced_method) unless public_send(disabled_method)
+              result
+            end
+
+            define_method :external_services_syncing? do
+              result = (!defined?(super) || super())
+              result &&= public_send(syncing_method) unless public_send(disabled_method)
               result
             end
           end

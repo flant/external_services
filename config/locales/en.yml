@@ -2,4 +2,4 @@ en:
   activerecord:
     errors:
       messages:
-        external_services_not_synced: "Not all external services are synced"
+        external_services_sync_in_process: "External services sync is in process now"
