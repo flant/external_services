@@ -175,8 +175,8 @@ module ExternalServices
             end
 
             define_method :external_services_syncing? do
-              result = (!defined?(super) || super())
-              result &&= public_send(syncing_method) unless public_send(disabled_method)
+              result = (defined?(super) && super())
+              result ||= public_send(syncing_method) unless public_send(disabled_method)
               result
             end
           end
