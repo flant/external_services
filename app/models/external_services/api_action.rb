@@ -1,5 +1,9 @@
 module ExternalServices
   class ApiAction < ::ActiveRecord::Base
+    include ExternalServices::Action
+
+    attr_accessor :async
+
     self.table_name = :external_services_api_actions
 
     belongs_to :initiator, polymorphic: true
@@ -19,21 +23,9 @@ module ExternalServices
 
     before_create :calculate_signature
 
-    def processed?
-      processed_at.present?
-    end
-
-    def set_processed!
-      update_attributes! processed_at: Time.now
-    end
-
     def initiator_class
       # Need to use initiator object for STI in polymorphic.. But still will be bugs with deleted STI object
       initiator.try(:class) || initiator_type.constantize
-    end
-
-    def api_disabled?
-      initiator_class.send(:"#{self.class.to_s.demodulize.underscore}_api_disabled")
     end
 
     def change_external_id?
@@ -44,20 +36,8 @@ module ExternalServices
       "ExternalServices::#{self.class.to_s.demodulize}ApiJob".constantize
     end
 
-    def kick_active_job
-      return if api_disabled?
-
-      job_class.set(queue: queue).perform_later(id)
-    end
-
-    def self.perform_unprocessed
-      Rails.logger.info "Running unprocessed #{self.class.name.demodulize} api actions..."
-
-      unprocessed.each(&:kick_active_job)
-    end
-
-    def execute!
-      raise NotImplementedError
+    def api_disabled?
+      initiator_class.send(:"#{self.class.to_s.demodulize.underscore}_api_disabled")
     end
 
     protected
@@ -82,6 +62,13 @@ module ExternalServices
 
     def path_format_correctness
       errors.add(:path, :invalid) if path =~ %r{//}
+    end
+
+    private
+
+    def create_or_update(*args)
+      return true unless async
+      super
     end
   end
 end
