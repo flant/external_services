@@ -64,6 +64,10 @@ module ExternalServices
       errors.add(:path, :invalid) if path =~ %r{//}
     end
 
+    def async
+      @async.nil? ? true : @async
+    end
+
     private
 
     def create_or_update(*args)
