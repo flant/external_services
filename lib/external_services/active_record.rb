@@ -125,11 +125,6 @@ module ExternalServices
               public_send(service_assoc).on_subject_destroy(self) unless only_api_actions
             end
             protected :"#{name}_on_destroy"
-
-            define_method :"#{name}_on_revive" do
-              public_send(service_assoc).on_subject_revive(self) unless only_api_actions
-            end
-            protected :"#{name}_on_revive"
           end
           # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
@@ -162,10 +157,10 @@ module ExternalServices
         def define_external_service_helper_methods(name, _options = {})
           ## subject class methods
           helpers_class_module = Module.new do
-            define_method :"with_#{name}_api_for" do |synced: [], for_syncing: [], &b|
-              return if ([synced] + [for_syncing]).flatten.select(&:"#{name}_api_disabled").any?
 
+            define_method :"with_#{name}_api_for" do |synced: [], for_syncing: [], &b|
               unsynced = [synced].flatten.select { |o| o.send("#{name}_id").nil? }
+
               if unsynced.any?
                 objects = unsynced.map { |o| "#{o.class.name} (id=#{o.id})" }.join(', ')
                 raise "[#{name}] Trying to work with an unsynced objects: #{objects}"
@@ -200,6 +195,19 @@ module ExternalServices
                 send :"#{name}_api_disabled=", old
               end
             end
+
+            define_method :"find_all_by_#{name}_ids" do |ids|
+              conditions = { external_services: { type: get_service_class(name).name, external_id: ids } }
+              includes(:"#{name}_service").where(conditions)
+            end
+
+            define_method :"#{name}_synced" do
+              includes(:"#{name}_service").where.not(external_services: { external_id: [nil, ''] })
+            end
+
+            define_method :"not_#{name}_synced" do
+              includes(:"#{name}_service").where(external_services: { external_id: [nil, ''] })
+            end
           end
 
           ## subject methods
@@ -220,10 +228,6 @@ module ExternalServices
               send(:"to_#{name}_api")
             end
 
-            define_method :"serialize_for_#{name}_api" do
-              ActiveSupport::HashWithIndifferentAccess.new JSON.parse(to_json)
-            end
-
             define_method :"#{name}_api_action" do |method, **args|
               return if self.class.send(:"#{name}_api_disabled")
               return if !args[:force] && send(:"#{name}_api_disabled")
@@ -231,7 +235,7 @@ module ExternalServices
               path    = args[:path]    || send(:"#{name}_api_path")
               data    = args[:data]    || send(:"#{name}_api_data")
               options = args[:options] || {}
-              async   = args[:async] || false
+              async   = args[:async].nil? ? true : args[:async]
 
               options[:change_external_id] = true if options[:change_external_id].nil?
 
@@ -242,13 +246,14 @@ module ExternalServices
                 path:      path,
                 data:      data,
                 queue:     args[:queue],
-                options:   options
+                options:   options,
+                async:     async
               )
 
               if async
-                action.execute!
-              else
                 action.save!
+              else
+                action.execute!
               end
             end
           end

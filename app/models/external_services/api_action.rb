@@ -62,7 +62,7 @@ module ExternalServices
     private
 
     def create_or_update(*args)
-      return true if async
+      return true unless async
       super
     end
   end
