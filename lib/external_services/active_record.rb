@@ -129,11 +129,6 @@ module ExternalServices
             end
             protected :"#{name}_on_destroy"
 
-            define_method :"#{name}_on_revive" do
-              public_send(service_assoc).on_subject_revive(self) unless only_api_actions
-            end
-            protected :"#{name}_on_revive"
-
             protected def halt_on_external_services_syncing
               if external_services_syncing?
                 errors.add :base, :external_services_sync_in_process
@@ -188,10 +183,10 @@ module ExternalServices
         def define_external_service_helper_methods(name, _options = {})
           ## subject class methods
           helpers_class_module = Module.new do
-            define_method :"with_#{name}_api_for" do |synced: [], for_syncing: [], &b|
-              return if ([synced] + [for_syncing]).flatten.select(&:"#{name}_api_disabled").any?
 
+            define_method :"with_#{name}_api_for" do |synced: [], for_syncing: [], &b|
               unsynced = [synced].flatten.select { |o| o.send("#{name}_id").nil? }
+
               if unsynced.any?
                 objects = unsynced.map { |o| "#{o.class.name} (id=#{o.id})" }.join(', ')
                 raise "[#{name}] Trying to work with an unsynced objects: #{objects}"
@@ -226,6 +221,19 @@ module ExternalServices
                 send :"#{name}_api_disabled=", old
               end
             end
+
+            define_method :"find_all_by_#{name}_ids" do |ids|
+              conditions = { external_services: { type: get_service_class(name).name, external_id: ids } }
+              includes(:"#{name}_service").where(conditions)
+            end
+
+            define_method :"#{name}_synced" do
+              includes(:"#{name}_service").where.not(external_services: { external_id: [nil, ''] })
+            end
+
+            define_method :"not_#{name}_synced" do
+              includes(:"#{name}_service").where(external_services: { external_id: [nil, ''] })
+            end
           end
 
           ## subject methods
@@ -253,18 +261,26 @@ module ExternalServices
               path    = args[:path]    || send(:"#{name}_api_path")
               data    = args[:data]    || send(:"#{name}_api_data")
               options = args[:options] || {}
+              async   = args[:async].nil? ? true : args[:async]
 
               options[:change_external_id] = true if options[:change_external_id].nil?
 
-              "ExternalServices::ApiActions::#{name.to_s.camelize}".constantize.create!(
+              action = "ExternalServices::ApiActions::#{name.to_s.camelize}".constantize.new(
                 initiator: self,
                 name:      args[:name] || self.class.send(:"#{name}_api_name"),
                 method:    method,
                 path:      path,
                 data:      data,
                 queue:     args[:queue],
-                options:   options
+                options:   options,
+                async:     async
               )
+
+              if async
+                action.save!
+              else
+                action.execute!
+              end
             end
           end
 
