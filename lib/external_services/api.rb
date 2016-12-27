@@ -4,6 +4,8 @@ require 'faraday_middleware'
 module ExternalServices
   module Api
     class Error < StandardError
+      attr_reader :response
+
       def initialize(response)
         @response = response
       end
