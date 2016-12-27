@@ -185,6 +185,10 @@ module ExternalServices
           helpers_class_module = Module.new do
 
             define_method :"with_#{name}_api_for" do |synced: [], for_syncing: [], &b|
+              (synced + for_syncing).map(&:class).uniq.each do |k|
+                return true if k.send("#{name}_api_disabled")
+              end
+
               unsynced = [synced].flatten.select { |o| o.send("#{name}_id").nil? }
 
               if unsynced.any?
