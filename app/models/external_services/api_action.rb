@@ -40,6 +40,10 @@ module ExternalServices
       initiator_class.send(:"#{self.class.to_s.demodulize.underscore}_api_disabled")
     end
 
+    def signature
+      async ? super : calculate_signature
+    end
+
     protected
 
     def assign_queue
