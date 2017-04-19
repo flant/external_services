@@ -44,6 +44,10 @@ module ExternalServices
       async ? super : calculate_signature
     end
 
+    def data
+      !async && (method.to_sym == :delete) ? nil : super
+    end
+
     protected
 
     def assign_queue
