@@ -24,7 +24,8 @@ module ExternalServices
     before_create :calculate_signature
 
     def initiator_class
-      # Need to use initiator object for STI in polymorphic.. But still will be bugs with deleted STI object
+      # Need to use initiator object for STI in polymorphic.. But still will be bugs with deleted STI object and
+      # non-STI inheritance
       initiator.try(:class) || initiator_type.constantize
     end
 

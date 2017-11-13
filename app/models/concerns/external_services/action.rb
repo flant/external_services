@@ -22,7 +22,7 @@ module ExternalServices
     end
 
     def kick_active_job
-      return if api_disabled?
+      return if processed? || api_disabled?
 
       job_class.set(queue: queue).perform_later(id)
     end
