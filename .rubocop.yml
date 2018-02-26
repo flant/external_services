@@ -2,6 +2,7 @@ AllCops:
   TargetRubyVersion: 2.2
   Exclude:
   - 'lib/generators/templates/**/*'
+  - 'spec/dummy/**/*'
 
 Metrics/LineLength:
   Max: 140

@@ -88,7 +88,7 @@ module ExternalServices
           end
         end
 
-        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
         def define_external_service_callbacks(name, options = {})
           service_assoc = :"#{name}_service"
           only_api_actions = (options[:only_api_actions] == true)
@@ -183,7 +183,6 @@ module ExternalServices
         def define_external_service_helper_methods(name, _options = {})
           ## subject class methods
           helpers_class_module = Module.new do
-
             define_method :"with_#{name}_api_for" do |synced: [], for_syncing: [], &b|
               (synced + for_syncing).map(&:class).uniq.each do |k|
                 return true if k.send("#{name}_api_disabled")

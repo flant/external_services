@@ -66,8 +66,7 @@ module ExternalServices
       self.data = nil if method.to_sym == :delete # DELETE has no body
     end
 
-    def calculate_signature
-    end
+    def calculate_signature; end
 
     def path_format_correctness
       errors.add(:path, :invalid) if path =~ %r{//}

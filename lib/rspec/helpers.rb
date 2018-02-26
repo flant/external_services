@@ -20,7 +20,7 @@ module ExternalServices
 
         def describe_external_service_api(object:, api_name:, **kwargs, &blk)
           action_class = kwargs[:action_class] || "ExternalServices::ApiActions::#{api_name.to_s.camelize}".constantize
-          methods = [:create, :update, :destroy]
+          methods = %i[create update destroy]
           methods -= [kwargs[:except]].flatten if kwargs[:except]
           methods &= [kwargs[:only]].flatten if kwargs[:only]
 
@@ -68,9 +68,7 @@ module ExternalServices
                 @api_object.send("#{@id_key}=", SecureRandom.hex)
                 @api_object.save
 
-                if @api_object.respond_to?(:descendants)
-                  @api_object.reload.descendants.each(&:delete)
-                end
+                @api_object.reload.descendants.each(&:delete) if @api_object.respond_to?(:descendants)
                 @api_object.destroy
                 expect_api_action_on_destroy(@api_object)
               end
@@ -117,7 +115,7 @@ module ExternalServices
         data = params.delete(:data) || {}
 
         actions = @action_class.where(params).select do |a|
-          data.select { |k, v| a.data[k.to_s] != v }.empty?
+          data.reject { |k, v| a.data[k.to_s] == v }.empty?
         end
 
         if count
