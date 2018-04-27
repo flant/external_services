@@ -13,5 +13,5 @@ gem 'rubocop', '~> 0.48', require: false
 
 gem 'pry-rails'
 
-gem 'factory_girl_rails'
+gem 'factory_bot_rails'
 gem 'rspec-rails'

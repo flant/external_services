@@ -12,7 +12,7 @@ module ExternalServices
           unless options[:only_api_actions] == true
             service_class = get_service_class(name, options)
             service_assoc = :"#{name}_service"
-            has_one service_assoc, class_name: service_class, as: :subject, dependent: :destroy, autosave: true
+            has_one service_assoc, class_name: service_class.to_s, as: :subject, dependent: :destroy, autosave: true
 
             define_external_service_getset         name, options
             define_external_service_sync_methods   name, options
