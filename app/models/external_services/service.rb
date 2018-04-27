@@ -5,7 +5,10 @@ module ExternalServices
     belongs_to :subject, polymorphic: true
     serialize :extra_data, JSON
 
-    after_update :on_first_sync, if: -> { external_id_was.nil? && external_id_changed? }
+    after_update :on_first_sync, if: proc { # Rails 5.1+ support
+      (respond_to?(:saved_change_to_external_id?) ? saved_change_to_external_id? : external_id_changed? ) &&
+      (respond_to?(:external_id_before_last_save) ? external_id_before_last_save.nil? : external_id_was)
+    }
 
     def self.to_sym
       to_s.demodulize.underscore.to_sym

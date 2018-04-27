@@ -106,10 +106,12 @@ module ExternalServices
                 before_destroy :halt_on_external_services_syncing
               end
 
-              after_save    :"#{name}_on_create", if: :id_changed?
+              after_save    :"#{name}_on_create", if: proc { # Rails 5.1+ support
+                respond_to?(:saved_change_to_id?) ? saved_change_to_id? : id_changed?
+              }
 
-              after_save    :"#{name}_on_update", if: proc {
-                !id_changed?
+              after_save    :"#{name}_on_update", if: proc {# Rails 5.1+ support
+                !(respond_to?(:saved_change_to_id?) ? saved_change_to_id? : id_changed?)
               }
 
               after_destroy :"#{name}_on_destroy"
