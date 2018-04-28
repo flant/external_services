@@ -26,7 +26,7 @@ module ExternalServices
 
           # rubocop:disable Lint/HandleExceptions
           begin
-            service_module = const_get(name.to_s.camelize)
+            service_module = const_get(name.to_s.camelize, false)
             include service_module
           rescue NameError
           end
