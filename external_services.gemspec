@@ -18,6 +18,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.post_install_message = <<-MSG
+    WARNING: since v0.4 active_job queues are prefixed, so you should check sidekiq config.
+    And there is a sidekiq queue clean function, you should use it on Sidekiq start  instead of cleaning all Redis db.
+  MSG
+
   spec.add_dependency 'faraday', '>= 0.9'
   spec.add_dependency 'faraday_middleware', '>= 0.10'
   spec.add_dependency 'rails', ['>= 4.2.5', '< 6.0']

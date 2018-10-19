@@ -19,7 +19,6 @@ module ExternalServices
 
     before_validation :assign_queue
     before_validation :process_data
-    after_commit      :kick_active_job
 
     before_create :calculate_signature
 
