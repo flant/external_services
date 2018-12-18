@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    external_services (0.4.0)
+    external_services (0.4.1)
       faraday (>= 0.9)
       faraday_middleware (>= 0.10)
       rails (>= 4.2.5, < 6.0)
@@ -91,7 +91,7 @@ GEM
     json (2.1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -101,15 +101,15 @@ GEM
     method_source (0.9.0)
     mimemagic (0.3.2)
     mini_mime (1.0.1)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.4.0)
     minitest (5.11.3)
     multi_json (1.13.1)
     multipart-post (2.0.0)
     net-http-persistent (2.9.4)
     net-http-pipeline (1.0.1)
     nio4r (2.3.1)
-    nokogiri (1.8.5)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.9.1)
+      mini_portile2 (~> 2.4.0)
     overcommit (0.46.0)
       childprocess (~> 0.6, >= 0.6.3)
       iniparse (~> 1.4)
@@ -125,7 +125,7 @@ GEM
     pusher-client (0.6.2)
       json
       websocket (~> 1.0)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.1)
@@ -225,4 +225,4 @@ DEPENDENCIES
   travis (~> 1.8, >= 1.8.2)
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

@@ -13,6 +13,12 @@ module ExternalServices
       def message
         @response.inspect
       end
+
+      alias :to_s :message
+
+      def inspect
+        "#{self.class}: #{to_s}"
+      end
     end
 
     def api_url

@@ -2,6 +2,8 @@ module ExternalServices
   class ApiAction < ::ActiveRecord::Base
     include ExternalServices::Action
 
+    MAX_ACTION_AGE = ENV.fetch('EXTERNAL_SERVICES_MAX_ACTION_AGE') { '90' }.to_i.days
+
     attr_accessor :async
 
     self.table_name = :external_services_api_actions
@@ -15,12 +17,17 @@ module ExternalServices
     serialize :options, JSON
 
     scope :unprocessed, -> { where(processed_at: nil) }
-    scope :to_create, ->(obj) { where(initiator: obj, method: :post) }
+    scope :processed,   -> { where.not(processed_at: nil) }
+    scope :to_create,   ->(obj) { where(initiator: obj, method: :post) }
 
     before_validation :assign_queue
     before_validation :process_data
 
     before_create :calculate_signature
+
+    def self.delete_old_processed
+      processed.where(arel_table[:created_at].lt(MAX_ACTION_AGE.ago)).delete_all
+    end
 
     def initiator_class
       # Need to use initiator object for STI in polymorphic.. But still will be bugs with deleted STI object and
