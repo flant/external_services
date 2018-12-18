@@ -5,7 +5,7 @@ module ExternalServices
     QUEUE_PREFIX = 'external_services'
 
     included do
-      scope :processed, -> { where.not(processed_at: nil) }
+      scope :processed,   -> { where.not(processed_at: nil) }
       scope :unprocessed, -> { where(processed_at: nil) }
 
       after_commit :kick_active_job

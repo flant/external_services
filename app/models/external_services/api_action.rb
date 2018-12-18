@@ -16,9 +16,7 @@ module ExternalServices
     serialize :data,    JSON
     serialize :options, JSON
 
-    scope :unprocessed, -> { where(processed_at: nil) }
-    scope :processed,   -> { where.not(processed_at: nil) }
-    scope :to_create,   ->(obj) { where(initiator: obj, method: :post) }
+    scope :to_create, ->(obj) { where(initiator: obj, method: :post) }
 
     before_validation :assign_queue
     before_validation :process_data
