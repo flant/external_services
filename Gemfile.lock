@@ -168,7 +168,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
-    rake (10.5.0)
+    rake (13.0.1)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.2)
@@ -234,7 +234,7 @@ DEPENDENCIES
   factory_bot_rails
   overcommit
   pry-rails
-  rake (~> 10.0)
+  rake (~> 13.0)
   rspec-rails
   rubocop (~> 0.48)
   sqlite3

@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'bundler', '~> 1.12'
-gem 'rake', '~> 10.0'
+gem 'rake', '~> 13.0'
 gem 'sqlite3'
 gem 'travis', '~> 1.8', '>= 1.8.2'
 
