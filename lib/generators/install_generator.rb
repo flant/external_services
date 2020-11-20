@@ -11,6 +11,12 @@ module ExternalServices
 
       desc 'Generates migrations and directories.'
 
+      def migration_version
+       return unless Rails::VERSION::MAJOR >= 5
+
+       "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+     end
+
       def create_migration_files
         add_migration('create_external_services')
         add_migration('create_external_services_api_actions')
@@ -39,7 +45,7 @@ module ExternalServices
         if self.class.migration_exists?(migration_dir, template)
           ::Kernel.warn "Migration already exists: #{template}"
         else
-          migration_template "migrations/#{template}.rb", "db/migrate/#{template}.rb"
+          migration_template "migrations/#{template}.rb", "db/migrate/#{template}.rb", migration_version: migration_version
         end
       end
     end

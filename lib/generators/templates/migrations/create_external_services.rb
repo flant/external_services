@@ -1,4 +1,4 @@
-class CreateExternalServices < ActiveRecord::Migration
+class CreateExternalServices < ActiveRecord::Migration<%= migration_version %>
   def change
     create_table :external_services do |t|
       t.references :subject, null: false, polymorphic: true, index: true
