@@ -76,7 +76,7 @@ module ExternalServices
 
             if kwargs[:descendants_identifier_check]
               it 'create actions for all descendants on identifier change' do
-                @api_object.update_attributes! identifier: "#{@api_object.identifier}1"
+                @api_object.update! identifier: "#{@api_object.identifier}1"
 
                 @api_object.descendants.each do |c|
                   expect_api_action_on_update(c)

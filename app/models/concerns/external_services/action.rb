@@ -16,7 +16,7 @@ module ExternalServices
     end
 
     def set_processed!
-      update_attributes! processed_at: Time.now
+      update! processed_at: Time.now
     end
 
     def execute!
