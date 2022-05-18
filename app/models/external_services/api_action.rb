@@ -53,6 +53,11 @@ module ExternalServices
       !async && (method.to_sym == :delete) ? nil : super
     end
 
+    def set_processed!
+      return true unless async
+      super
+    end
+
     protected
 
     def assign_queue
