@@ -25,6 +25,7 @@ module ExternalServices
 
     def kick_active_job
       # return if processed? || api_disabled?
+      return if saved_changes.size == 1 && saved_change_to_options.present?
 
       job_class.set(queue: prefixed_queue).perform_later(id)
     end

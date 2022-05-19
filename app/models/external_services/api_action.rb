@@ -55,6 +55,7 @@ module ExternalServices
 
     def set_processed!
       return true unless async
+
       super
     end
 
