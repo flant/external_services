@@ -7,14 +7,14 @@ module ExternalServices
     class InstallGenerator < ::Rails::Generators::Base
       include ::Rails::Generators::Migration
 
-      source_root File.expand_path('../templates', __FILE__)
+      source_root File.expand_path('templates', __dir__)
 
       desc 'Generates migrations and directories.'
 
       def migration_version
-       return unless Rails::VERSION::MAJOR >= 5
+        return unless Rails::VERSION::MAJOR >= 5
 
-       "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
+        "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
      end
 
       def create_migration_files

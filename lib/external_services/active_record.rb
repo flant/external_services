@@ -110,7 +110,7 @@ module ExternalServices
                 respond_to?(:saved_change_to_id?) ? saved_change_to_id? : id_changed?
               }
 
-              after_save    :"#{name}_on_update", if: proc {# Rails 5.1+ support
+              after_save :"#{name}_on_update", if: proc { # Rails 5.1+ support
                 !(respond_to?(:saved_change_to_id?) ? saved_change_to_id? : id_changed?)
               }
 
@@ -142,7 +142,7 @@ module ExternalServices
               end
             end
           end
-          # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+          # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
 
           include callbacks_module
         end

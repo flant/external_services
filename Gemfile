@@ -10,6 +10,7 @@ gem 'travis', '~> 1.8', '>= 1.8.2'
 
 gem 'overcommit'
 gem 'rubocop', '~> 0.48', require: false
+gem 'rubocop-rspec'
 
 gem 'pry-rails'
 

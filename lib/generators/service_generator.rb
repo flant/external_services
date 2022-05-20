@@ -5,7 +5,7 @@ module ExternalServices
   module Generators
     # Installs ExternalServices in a rails app.
     class ServiceGenerator < ::Rails::Generators::NamedBase
-      source_root File.expand_path('../templates/services', __FILE__)
+      source_root File.expand_path('templates/services', __dir__)
 
       class_option(
         :only_api_actions,
