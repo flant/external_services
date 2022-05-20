@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    external_services (0.4.4)
+    external_services (0.5.0)
       faraday (>= 0.9)
       faraday_middleware (>= 0.10)
       rails (>= 4.2.5, < 7)
