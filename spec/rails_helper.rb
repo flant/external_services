@@ -1,11 +1,11 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 
-require File.expand_path('../dummy/config/environment.rb', __FILE__)
+require File.expand_path('dummy/config/environment.rb', __dir__)
 require 'rspec/rails'
 require 'factory_bot_rails'
 
-ActiveRecord::Migrator.migrations_paths = [File.expand_path('../../spec/dummy/db/migrate', __FILE__)]
+ActiveRecord::Migrator.migrations_paths = [File.expand_path('../spec/dummy/db/migrate', __dir__)]
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|

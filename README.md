@@ -1,6 +1,10 @@
-# ExternalServices [![Build Status](https://travis-ci.org/flant/external_services.svg?branch=master)](https://travis-ci.org/flant/external_services)
+# ExternalServices
+
+[![Test](https://github.com/flant/external_services/actions/workflows/ruby.yml/badge.svg)](https://github.com/flant/external_services/actions/workflows/ruby.yml) [![Gem Version](https://badge.fury.io/rb/external_services.svg)](https://badge.fury.io/rb/external_services)
+
 
 Gem helps syncronizing objects to different external services like Gitlab, Redmine and any other.
+
 
 ## Installation
 

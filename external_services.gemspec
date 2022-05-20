@@ -1,5 +1,4 @@
-
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'external_services/version'
 
@@ -23,7 +22,7 @@ Gem::Specification.new do |spec|
     And there is a sidekiq queue clean function, you should use it on Sidekiq start  instead of cleaning all Redis db.
   MSG
 
-  spec.add_dependency 'faraday', '>= 0.9'
-  spec.add_dependency 'faraday_middleware', '>= 0.10'
+  spec.add_dependency 'faraday', '>= 1.4', '< 2'
+  spec.add_dependency 'faraday_middleware', '>= 1.0', '< 2'
   spec.add_dependency 'rails', ['>= 4.2.5', '< 7']
 end

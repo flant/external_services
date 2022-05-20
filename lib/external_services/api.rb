@@ -14,10 +14,10 @@ module ExternalServices
         @response.inspect
       end
 
-      alias :to_s :message
+      alias to_s message
 
       def inspect
-        "#{self.class}: #{to_s}"
+        "#{self.class}: #{self}"
       end
     end
 
