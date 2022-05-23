@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'overcommit'
 gem 'rubocop', '~> 1.0', require: false
 gem 'rubocop-rspec'
+gem 'net-smtp', require: false # hack for pre 7.0.1 rails and 3.1 ruby
 
 gem 'pry-rails'
 
