@@ -36,10 +36,8 @@ module ExternalServices
 
     module ClassMethods
       def clear_sidekiq_queues
-        Sidekiq.redis do |conn|
-          conn.keys.select { |k| k.include?(QUEUE_PREFIX) }.each do |k|
-            conn.del k
-          end
+        Sidekiq::Queue.all.each do |queue|
+          queue.clear if queue.name.include?(QUEUE_PREFIX)
         end
       end
 
