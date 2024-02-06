@@ -147,7 +147,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.9)
-    nokogiri (1.16.0)
+    nokogiri (1.16.2)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     overcommit (0.46.0)
