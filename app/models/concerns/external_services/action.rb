@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExternalServices
   module Action
     extend ActiveSupport::Concern

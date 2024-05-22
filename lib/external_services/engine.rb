@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails'
 module ExternalServices
   class Engine < ::Rails::Engine

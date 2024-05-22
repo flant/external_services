@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExternalServices
   module ActiveRecord
     module HasExternalService
@@ -24,13 +26,11 @@ module ExternalServices
           extend  service_class::SubjectClassMethods if defined? service_class::SubjectClassMethods
           include service_class::SubjectMethods if defined? service_class::SubjectMethods
 
-          # rubocop:disable Lint/HandleExceptions
           begin
             service_module = const_get(name.to_s.camelize, false)
             include service_module
           rescue NameError
           end
-          # rubocop:enable Lint/HandleExceptions
         end
 
         def includes_external_services
@@ -106,7 +106,7 @@ module ExternalServices
                 before_destroy :halt_on_external_services_syncing
               end
 
-              after_save    :"#{name}_on_create", if: proc { # Rails 5.1+ support
+              after_save :"#{name}_on_create", if: proc { # Rails 5.1+ support
                 respond_to?(:saved_change_to_id?) ? saved_change_to_id? : id_changed?
               }
 
@@ -120,7 +120,6 @@ module ExternalServices
             define_method :"#{name}_on_create" do
               public_send(service_assoc).on_subject_create(self) unless only_api_actions
             end
-            protected :"#{name}_on_create"
 
             define_method :"#{name}_on_update" do
               public_send(service_assoc).on_subject_update(self) unless only_api_actions
@@ -129,17 +128,16 @@ module ExternalServices
             define_method :"#{name}_on_destroy" do
               public_send(service_assoc).on_subject_destroy(self) unless only_api_actions
             end
-            protected :"#{name}_on_destroy"
 
-            protected def halt_on_external_services_syncing
-              if external_services_syncing?
-                errors.add :base, :external_services_sync_in_process
-                if ::ActiveRecord::VERSION::MAJOR < 5
-                  return false
-                else
-                  throw :abort
-                end
-              end
+            protected
+
+            def halt_on_external_services_syncing
+              return unless external_services_syncing?
+
+              errors.add :base, :external_services_sync_in_process
+              return false if ::ActiveRecord::VERSION::MAJOR < 5
+
+              throw :abort
             end
           end
           # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
@@ -166,13 +164,13 @@ module ExternalServices
             end
 
             define_method :external_services_synced? do
-              result = (!defined?(super) || super())
+              result = !defined?(super) || super()
               result &&= public_send(synced_method) unless public_send(disabled_method)
               result
             end
 
             define_method :external_services_syncing? do
-              result = (defined?(super) && super())
+              result = defined?(super) && super()
               result ||= public_send(syncing_method) unless public_send(disabled_method)
               result
             end
@@ -217,14 +215,12 @@ module ExternalServices
             end
 
             define_method :"without_#{name}_api" do |&blk|
-              begin
-                old = send :"#{name}_api_disabled"
-                send :"#{name}_api_disabled=", true
+              old = send :"#{name}_api_disabled"
+              send :"#{name}_api_disabled=", true
 
-                blk.call
-              ensure
-                send :"#{name}_api_disabled=", old
-              end
+              blk.call
+            ensure
+              send :"#{name}_api_disabled=", old
             end
 
             define_method :"find_all_by_#{name}_ids" do |ids|
@@ -272,13 +268,13 @@ module ExternalServices
 
               action = "ExternalServices::ApiActions::#{name.to_s.camelize}".constantize.new(
                 initiator: self,
-                name:      args[:name] || self.class.send(:"#{name}_api_name"),
-                method:    method,
-                path:      path,
-                data:      data,
-                queue:     args[:queue],
-                options:   options,
-                async:     async
+                name: args[:name] || self.class.send(:"#{name}_api_name"),
+                method: method,
+                path: path,
+                data: data,
+                queue: args[:queue],
+                options: options,
+                async: async
               )
 
               if async
@@ -299,5 +295,5 @@ module ExternalServices
 end
 
 ActiveSupport.on_load :active_record do
-  ActiveRecord::Base.send :include, ExternalServices::ActiveRecord::HasExternalService
+  ActiveRecord::Base.include ExternalServices::ActiveRecord::HasExternalService
 end

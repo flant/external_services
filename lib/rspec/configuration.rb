@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExternalServices
   module RSpec
     module Configuration
@@ -18,4 +20,4 @@ module ExternalServices
   end
 end
 
-RSpec::Core::Configuration.send(:include, ExternalServices::RSpec::Configuration)
+RSpec::Core::Configuration.include ExternalServices::RSpec::Configuration

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails/generators'
 require 'rails/generators/active_record'
 
@@ -15,7 +17,7 @@ module ExternalServices
         return unless Rails::VERSION::MAJOR >= 5
 
         "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
-     end
+      end
 
       def create_migration_files
         add_migration('create_external_services')

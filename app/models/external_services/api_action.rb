@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module ExternalServices
   class ApiAction < ::ActiveRecord::Base
     include ExternalServices::Action
 
-    MAX_ACTION_AGE = ENV.fetch('EXTERNAL_SERVICES_MAX_ACTION_AGE') { '90' }.to_i.days
+    MAX_ACTION_AGE = ENV.fetch('EXTERNAL_SERVICES_MAX_ACTION_AGE', '90').to_i.days
 
     attr_accessor :async
 
@@ -13,8 +15,8 @@ module ExternalServices
     validates :initiator_id, :initiator_type, :method, :path, :queue, presence: true
     validate  :path_format_correctness
 
-    serialize :data,    JSON
-    serialize :options, JSON
+    serialize :data, coder: JSON
+    serialize :options, coder: JSON
 
     scope :to_create, ->(obj) { where(initiator: obj, method: :post) }
 
@@ -90,6 +92,7 @@ module ExternalServices
 
     def create_or_update(*args)
       return true unless async
+
       super
     end
   end

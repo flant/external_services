@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExternalServices
   class Service < ::ActiveRecord::Base
     self.table_name = :external_services
@@ -6,8 +8,8 @@ module ExternalServices
     serialize :extra_data, JSON
 
     after_update :on_first_sync, if: proc { # Rails 5.1+ support
-      (respond_to?(:saved_change_to_external_id?) ? saved_change_to_external_id? : external_id_changed? ) &&
-      (respond_to?(:external_id_before_last_save) ? external_id_before_last_save : external_id_was).nil?
+      (respond_to?(:saved_change_to_external_id?) ? saved_change_to_external_id? : external_id_changed?) &&
+        (respond_to?(:external_id_before_last_save) ? external_id_before_last_save : external_id_was).nil?
     }
 
     def self.to_sym
@@ -22,6 +24,7 @@ module ExternalServices
     def on_subject_update(subj)
       method = subj.send("#{api_name}_id").present? ? :put : :post
       return true if (subj.respond_to?(:became_archived?) && subj.became_archived?) && method == :post
+
       subj.send("#{api_name}_api_action", method)
     end
 
