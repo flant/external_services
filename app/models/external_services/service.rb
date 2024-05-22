@@ -5,7 +5,7 @@ module ExternalServices
     self.table_name = :external_services
 
     belongs_to :subject, polymorphic: true
-    serialize :extra_data, JSON
+    serialize :extra_data, coder: JSON
 
     after_update :on_first_sync, if: proc { # Rails 5.1+ support
       (respond_to?(:saved_change_to_external_id?) ? saved_change_to_external_id? : external_id_changed?) &&
