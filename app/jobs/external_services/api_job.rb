@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ExternalServices
   class ApiJob < ActiveJob::Base
     queue_as :default
