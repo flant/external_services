@@ -3,7 +3,7 @@ PATH
   specs:
     external_services (0.6.0)
       faraday (>= 2.0, < 3)
-      rails (>= 4.2.5, < 8)
+      rails (>= 5.0.7, < 8)
 
 GEM
   remote: https://rubygems.org/
