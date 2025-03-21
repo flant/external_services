@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'faraday'
-require 'faraday_middleware'
 
 module ExternalServices
   module Api
@@ -10,6 +9,8 @@ module ExternalServices
 
       def initialize(response)
         @response = response
+
+        super
       end
 
       def message

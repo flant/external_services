@@ -6,7 +6,7 @@ module ExternalServices
 
     MAX_ACTION_AGE = ENV.fetch('EXTERNAL_SERVICES_MAX_ACTION_AGE', '90').to_i.days
 
-    attr_accessor :async
+    attr_writer :async
 
     self.table_name = :external_services_api_actions
 
@@ -85,7 +85,7 @@ module ExternalServices
     end
 
     def async
-      @async.nil? ? true : @async
+      @async.nil? || @async
     end
 
     private

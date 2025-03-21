@@ -29,7 +29,7 @@ module ExternalServices
           begin
             service_module = const_get(name.to_s.camelize, false)
             include service_module
-          rescue NameError
+          rescue NameError # rubocop:disable Lint/SuppressedException
           end
         end
 
@@ -88,7 +88,7 @@ module ExternalServices
           end
         end
 
-        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
+        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         def define_external_service_callbacks(name, options = {})
           service_assoc = :"#{name}_service"
           only_api_actions = (options[:only_api_actions] == true)
@@ -140,7 +140,7 @@ module ExternalServices
               throw :abort
             end
           end
-          # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
+          # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
           include callbacks_module
         end
@@ -262,7 +262,7 @@ module ExternalServices
               path    = args[:path]    || send(:"#{name}_api_path")
               data    = args[:data]    || send(:"#{name}_api_data")
               options = args[:options] || {}
-              async   = args[:async].nil? ? true : args[:async]
+              async   = args[:async].nil? || args[:async]
 
               options[:change_external_id] = true if options[:change_external_id].nil?
 
