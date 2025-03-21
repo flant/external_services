@@ -24,7 +24,3 @@ gem 'pry-rails', '~> 0.3'
 
 gem 'factory_bot_rails'
 gem 'rspec-rails'
-
-# to test on ruby < 3.2
-gem 'nokogiri', '~> 1.15.0'
-gem 'zeitwerk', '~> 2.6.18'
