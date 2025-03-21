@@ -273,7 +273,7 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.7.2)
+    zeitwerk (2.6.18)
 
 PLATFORMS
   ruby
@@ -295,6 +295,7 @@ DEPENDENCIES
   rubocop-rspec (~> 3.5)
   rubocop-rspec_rails (~> 2.31)
   sqlite3
+  zeitwerk (~> 2.6.18)
 
 BUNDLED WITH
    2.5.9

@@ -24,3 +24,5 @@ gem 'pry-rails', '~> 0.3'
 
 gem 'factory_bot_rails'
 gem 'rspec-rails'
+
+gem 'zeitwerk', '~>2.6.18' # to test on ruby < 3.2
