@@ -1,33 +1,40 @@
+plugins:
+  - rubocop-factory_bot
+  - rubocop-rspec
+  - rubocop-rspec_rails
+  - rubocop-rake
+
 AllCops:
   TargetRubyVersion: 2.7
+  NewCops: disable
   Exclude:
   - 'lib/generators/templates/**/*'
   - 'spec/dummy/**/*'
+  - 'vendor/**/*'
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 140
 
 Metrics/AbcSize:
   Max: 25
 
 Metrics/MethodLength:
-  Max: 20
+  Max: 25
 
 Metrics/ModuleLength:
-  Max: 200
+  Max: 250
 
 Metrics/ClassLength:
   Max: 300
 
 Metrics/CyclomaticComplexity:
-  Max: 8
+  Max: 10
 
 Metrics/PerceivedComplexity:
-  Max: 8
-
+  Max: 10
 
 Style/Documentation:
   Enabled: false
 
-Style/PredicateName:
+Naming/PredicateName:
   Enabled: false

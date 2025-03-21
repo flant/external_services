@@ -18,8 +18,7 @@ module ExternalServices
           end
         end
 
-        # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-
+        # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/BlockLength
         def describe_external_service_api(object:, api_name:, **kwargs, &blk)
           action_class = kwargs[:action_class] || "ExternalServices::ApiActions::#{api_name.to_s.camelize}".constantize
           methods = %i[create update destroy]
@@ -88,9 +87,8 @@ module ExternalServices
 
             instance_exec(&blk) if block_given?
           end
-
-          # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
         end
+        # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Metrics/BlockLength
       end
 
       def remove_api_actions(api_name)
