@@ -3,6 +3,7 @@
 /_yardoc/
 /coverage/
 /doc/
+/vendor/
 /pkg/
 /spec/reports/
 /tmp/
