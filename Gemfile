@@ -8,8 +8,8 @@ gemspec
 gem 'rake', '~> 13.0'
 gem 'sqlite3'
 
-gem 'net-smtp', require: false # HACK: for pre 7.0.1 rails and 3.1 ruby
 gem 'fiddle'
+gem 'net-smtp', require: false # HACK: for pre 7.0.1 rails and 3.1 ruby
 gem 'observer'
 
 gem 'overcommit'
@@ -25,4 +25,6 @@ gem 'pry-rails', '~> 0.3'
 gem 'factory_bot_rails'
 gem 'rspec-rails'
 
-gem 'zeitwerk', '~>2.6.18' # to test on ruby < 3.2
+# to test on ruby < 3.2
+gem 'nokogiri', '~> 1.15.0'
+gem 'zeitwerk', '~> 2.6.18'
