@@ -67,6 +67,10 @@ module ExternalServices
       request(:delete, path, params)
     end
 
+    def patch(path, body:, params: {}, **_kwargs)
+      request(:patch, path, params, body)
+    end
+
     def fake?
       !connection
     end
