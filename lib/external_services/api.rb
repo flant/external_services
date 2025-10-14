@@ -7,7 +7,7 @@ module ExternalServices
     class Error < StandardError
       attr_reader :response, :status, :url, :method, :body
 
-      def initialize(response = nil)
+      def initialize(response)
         @response = response
 
         if response.respond_to?(:env)
