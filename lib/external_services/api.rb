@@ -5,22 +5,36 @@ require 'faraday'
 module ExternalServices
   module Api
     class Error < StandardError
-      attr_reader :response
+      attr_reader :response, :status, :url, :method, :body
 
       def initialize(response)
         @response = response
 
-        super
+        if response.respond_to?(:env)
+          @status = response.status
+          @url = response.env.url.to_s
+          @method = response.env.method.to_s.upcase
+          @body = response.body
+        end
+
+        super(build_message)
       end
 
-      def message
-        @response.inspect
-      end
+      private
 
-      alias to_s message
+      def build_message
+        return 'API Error: No response provided' if response.nil?
 
-      def inspect
-        "#{self.class}: #{self}"
+        message = <<~MSG
+          API Error:
+            Method: #{method}
+            URL: #{url}
+            Status: HTTP #{status}
+        MSG
+
+        message += "  Body: #{body.inspect}\n" if body
+
+        message.strip
       end
     end
 
