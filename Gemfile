@@ -22,5 +22,7 @@ gem 'rubocop-rspec_rails', '~> 2.31'
 gem 'pry', '>= 0.14'
 gem 'pry-rails', '~> 0.3'
 
+gem 'propshaft', '~> 1.3'
+
 gem 'factory_bot_rails'
 gem 'rspec-rails'
